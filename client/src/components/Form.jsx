@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { handleSignup, handleSignin, handleGoogleSignin, handleGithubSignin, handleforgetPassword } from '../firebase/firebase.js';
 import { useNavigate } from 'react-router-dom';
+import { authenticateUser } from '../../fetchAPI.js';
 
 const Form = () => {
   const email = useRef();
@@ -13,49 +14,18 @@ const Form = () => {
     setIsSignIn(!isSignIn);
   };
 
-  const handleSubmit1 = async (e) => {
-    e.preventDefault();
-    const formdata = new FormData(e.target);
-    const jsonData = Object.fromEntries(formdata.entries());
-    const { auth, error } = await handleSignup(jsonData);
-    if (auth.length > 0) {
-      navigate('/unitwise/authtoken', { state: { auth: auth } });
-    } else {
-      toast.error(error);
-    }
-  };
+  const handleAuthenticate =async () =>{
+     const obj = {username : " " , password : " "};
+     try {
+       const response =  await authenticateUser(obj);
+       // toast 
+     } catch (error) {
+      console.log(error);
+      //toast
+     }
 
-  const handleSubmit2 = async (e) => {
-    e.preventDefault();
-    const formdata = new FormData(e.target);
-    const jsonData = Object.fromEntries(formdata.entries());
-    const { auth, error } = await handleSignin(jsonData);
-    if (auth.length > 0) {
-      navigate('/unitwise/authtoken', { state: { auth: auth } });
-    } else {
-      toast.error(error);
-    }
-  };
-
-  const handleGoogle = async (e) => {
-    e.preventDefault();
-    const { auth, error } = await handleGoogleSignin();
-    if (auth.length > 0) {
-      navigate('/unitwise/authtoken', { state: { auth: auth } });
-    } else {
-      toast.error(error);
-    }
-  };
-
-  const handleGithub = async (e) => {
-    e.preventDefault();
-    const { auth, error } = await handleGithubSignin();
-    if (auth.length > 0) {
-      navigate('/unitwise/authtoken', { state: { auth: auth } });
-    } else {
-      toast.error(error);
-    }
-  };
+  }
+  
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gray-900">
