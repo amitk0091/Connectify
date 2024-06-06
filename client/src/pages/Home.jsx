@@ -1,10 +1,24 @@
+import React, { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import ContactList from "../components/ContactList";
+import ChatPanel from "../components/ChatPanel";
 
 function Home() {
+  const [selectedContact, setSelectedContact] = useState(null);
+
+  const handleContactSelect = (contact) => {
+    setSelectedContact(contact);
+  };
+
   return (
-    <div className="text-4xl font-bold ">
-        hello
-    </div>
-  )
+    <>
+      <div className="flex">
+        <Sidebar />
+        <ContactList onSelectContact={handleContactSelect} />
+        {selectedContact && <ChatPanel selectedContact={selectedContact} />}
+      </div>
+    </>
+  );
 }
 
-export default Home
+export default Home;

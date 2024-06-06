@@ -1,6 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 *{
     margin: 0;
@@ -17,9 +21,15 @@
   
   html,body{
     height: 100%;
+    background: #ffff;
     width: 100%;
     box-sizing: border-box;
-    background-color: #0E0119;
+    background-color: black;
     font-family: "Manrope " , sans-serif;
   
   }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+

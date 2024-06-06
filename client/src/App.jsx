@@ -1,9 +1,7 @@
-import {
-  RouterProvider,
-  createBrowserRouter
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
-import Form from "./components/Form";
+import Login from "./pages/Login";
+
 
 const router = createBrowserRouter([
   {
@@ -11,17 +9,20 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/login",
-    element: <Form/>,
+    path: "/signup",
+    element: <Login />,
   },
 ]);
 function App() {
+  
   return (
-    <div className="flex-grow">
+    <>
+     
+      <div className="flex-grow">
         <RouterProvider router={router} />
-    </div>
-  )
+      </div>
+    </>
+  );
 }
 
-export default App
-
+export default App;
