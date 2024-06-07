@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import '../pages/Login.css'
-import { createUser } from "../../fetchAPI";
+import { createUser , loginUser } from "../../fetchAPI";
 
 function Login() {
  const [name , setName] = useState("");
@@ -22,9 +22,9 @@ const handleSignUp = async (e) =>{
   }
 }
 const handleSignIn = async () =>{
-  const obj = {name : 'Rushikesh' , phoneNumber :'9867038967' , password : '1122334455'}
+  const obj = {name : '' , phoneNumber :'' , password : ''}
   try {
-    const response = await createUser(obj)
+    const response = await loginUser(obj)
     console.log(response);
     console.log(response.data);
   } catch (error) {
@@ -48,9 +48,6 @@ const handleToggleForm = () => {
         <form onSubmit={handleSignIn}>
         <div className="login">
           <h2>{isSignIn ? 'Login' : 'Signup'}</h2>
-          <div className="inputBx">
-            <input type="text" placeholder="Phone Number" />
-          </div>
           <div className="inputBx">
             <input type="text" placeholder="Username" />
           </div>

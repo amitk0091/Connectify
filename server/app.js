@@ -3,7 +3,9 @@ const {config} = require('dotenv')
 const cookieParser = require('cookie-parser')
 const userModel = require('./models/user')
 const cors = require('cors');
-
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const cookie = require('cookie-parser');
 // config({path : './utils/.env'} );
 config();
 
@@ -22,28 +24,63 @@ app.use(cors())
 app.use(express.urlencoded({extended : true}))
 
 
-app.post('/create', async (req,res)=>{
+app.post('/create', (req,res)=>{
 let {name , password , phoneNumber } = req.body ;
-console.log(req.body);
-  let createdUsers = await userModel.create({
+bcrypt.genSalt(10,(err,salt)=>{
+ bcrypt.hash(password,salt,async (err,hash)=>{
+ let createdUsers = await userModel.create({
      name ,
-     password ,
+     password: hash,
      phoneNumber 
   })
+
+  let token = jwt.sign({name},"shhshhshhshhhshhshhs");
+  res.cookie("token" , token);
   res.send(createdUsers);
+ })
+})
+  
   
 })
 
-const service1Routes = require('./routes/Service1Routes')
-// app.use('/create' , createRoutes)
-app.use('/service1', service1Routes)
-app.use('/chat', service1Routes)
-// chat video auth status
+app.post('/logout',(req,res)=>{
+  res.cookie("token","");
+  res.redirect('/');
+})
 
-// app.use('/service2', )
-// app.use('/service3', )
+app.post('/login', async (req,res)=>{
+ let user = await userModel.findOne({name: req.body.name});
+ console.log(user);
+ if (!user) {
+  return res.send('Name is required');
+}
+bcrypt.compare(req.body.password , user.password , (err,result)=>{
+  if(result) {
+    let token = jwt.sign({name: user.name},"shhshhshhshhhshhshhs");
+    res.cookie("token" , token);
+    return res.redirect('/');
+  }
+  else alert('Wrong Password');
+})
+} )
 
-// port , callback function
+
+
+
+
+
+
+
+// const service1Routes = require('./routes/Service1Routes')
+// // app.use('/create' , createRoutes)
+// app.use('/service1', service1Routes)
+// app.use('/chat', service1Routes)
+// // chat video auth status
+
+// // app.use('/service2', )
+// // app.use('/service3', )
+
+// // port , callback function
 app.listen(PORT, () =>{
     console.log(`app is listening at ${PORT} `);
 });

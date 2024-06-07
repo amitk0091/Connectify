@@ -1,7 +1,7 @@
 
 
 
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { BsFillPersonFill, BsSearch } from 'react-icons/bs';
 import { FiPhone, FiVideo } from 'react-icons/fi';
 import { AiOutlineSmile, AiOutlineFileImage } from 'react-icons/ai';

@@ -29,3 +29,13 @@ export const createUser = async (obj) => {
         throw error;
     }
 };
+
+export const loginUser = async (obj) => {
+    try {
+        const response = await connectifyAxios().post(`/login`, obj);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
