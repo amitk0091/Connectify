@@ -126,9 +126,8 @@ const LoginSignupForm = () => {
         <div className="panel left-panel">
           <div className="content mt-32 ">
             <h3>New here ?</h3>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-              ex ratione. Aliquid!
+            <p className="m-3">
+            Connect with friends, family, and colleagues like never before. Our chat app makes it easy to stay in touch, no matter where you are. Sign up now to start messaging instantly!
             </p>
             <button className="btn transparent" onClick={handleSignUpClick}>
               Sign up
@@ -139,9 +138,8 @@ const LoginSignupForm = () => {
         <div className="panel right-panel">
           <div className="content mt-32">
             <h3>One of us ?</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              laboriosam ad deleniti.
+            <p className="m-3">
+            Connect with friends, family, and colleagues like never before. Our chat app makes it easy to stay in touch, no matter where you are. Sign up now to start messaging instantly!
             </p>
             <button className="btn transparent" onClick={handleSignInClick}>
               Sign in
