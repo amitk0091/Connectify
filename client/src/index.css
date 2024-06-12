@@ -14,11 +14,7 @@
     font-family: "Manrope" , sans-serif;
   }
   
-  @font-face {
-    font-family: 'Manrope' ;
-    src: url('/Manrope-Regular.ttf') format('truetype');
-  }
-  
+
   html,body{
     height: 100%;
     background: #ffff;

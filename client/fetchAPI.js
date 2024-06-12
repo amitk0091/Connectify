@@ -12,7 +12,7 @@ const connectifyAxios = () => {
 
 export const authenticateUser = async (id) => {
     try {
-        const response = await connectifyAxios().get(`/getUser/${id}`);
+        const response = await connectifyAxios().get(`/users/${id}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -22,7 +22,7 @@ export const authenticateUser = async (id) => {
 
 export const createUser = async (obj) => {
     try {
-        const response = await connectifyAxios().post(`/create`, obj);
+        const response = await connectifyAxios().post(`/users`, obj);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -32,7 +32,7 @@ export const createUser = async (obj) => {
 
 export const loginUser = async (obj) => {
     try {
-        const response = await connectifyAxios().post(`/login`, obj);
+        const response = await connectifyAxios().post(`/users`, obj);
         return response.data;
     } catch (error) {
         console.log(error);
