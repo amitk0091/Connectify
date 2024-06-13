@@ -20,12 +20,10 @@
     background: #ffff;
     width: 100%;
     box-sizing: border-box;
-    background-color: black;
+    background-color: rgba(17,24,39,255);
     font-family: "Manrope " , sans-serif;
   
   }
   ::-webkit-scrollbar {
     display: none;
   }
-
-

@@ -4,8 +4,9 @@ import axios from "axios";
 
 const connectifyAxios = () => {
     const connectifyAxios = axios.create({
-        baseURL: 'http://localhost:3000',
-        headers : {'content-type' : 'application/json'}
+        baseURL: 'http://localhost:5000',
+        headers : {'content-type' : 'application/json'},
+        withCredentials:true
     });
     return connectifyAxios;
 }
@@ -32,7 +33,7 @@ export const createUser = async (obj) => {
 
 export const loginUser = async (obj) => {
     try {
-        const response = await connectifyAxios().post(`/users`, obj);
+        const response = await connectifyAxios().post(`/login`, obj);
         return response.data;
     } catch (error) {
         console.log(error);
