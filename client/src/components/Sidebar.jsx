@@ -2,8 +2,13 @@
  import React, { useState } from 'react';
  import { motion } from 'framer-motion';
  import { FaComments, FaUserFriends, FaPhoneAlt, FaCog } from 'react-icons/fa';
+import Toggle from './Toggle';
+import { useSelector } from 'react-redux';
+
 
  const Sidebar = () => {
+  const theme = useSelector((state) => state.theme);
+
    const [selected, setSelected] = useState('chat');
 
    const handleClick = (icon) => {
@@ -17,11 +22,13 @@
    ];
 
    return (
+    <>
      <motion.div
        initial={{ x: -50 }}
        animate={{ x: 0 }}
        transition={{ duration: 0.5 }}
-       className="w-16 h-screen bg-gray-900 text-white flex flex-col items-center py-4"
+       className="w-16 h-screen  text-white flex flex-col items-center py-4"
+       style={{ backgroundColor: theme === 'light' ? '#dbeeff' : '#111827'}}
      >
        <div className="mb-6">
          {/* Logo */}
@@ -46,6 +53,13 @@
        <div className="mb-4">
          <motion.div
            whileHover={{ scale: 1.2 }}
+         >
+           <Toggle/>
+         </motion.div>
+       </div>
+       <div className="mb-4">
+         <motion.div
+           whileHover={{ scale: 1.2 }}
            className={`p-2 rounded-full cursor-pointer ${selected === 'settings' ? 'bg-blue-700' : 'bg-gray-800'}`}
            onClick={() => handleClick('settings')}
          >
@@ -53,6 +67,8 @@
          </motion.div>
        </div>
      </motion.div>
+     
+      </>
    );
  };
 
