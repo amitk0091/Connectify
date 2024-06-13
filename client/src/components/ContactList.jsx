@@ -32,7 +32,7 @@ const ContactList = ({ onSelectContact }) => {
   );
 
   return (
-    <div className={`w-64 h-screen ${theme === 'light' ? 'bg-sky-300 text-gray-800' : 'bg-gradient-to-b from-gray-700 to-gray-900 text-white'} p-4 shadow-lg rounded-lg`}>
+    <div className={`w-64 h-screen ${theme === 'light' ? 'bg-sky-300 text-gray-800' : 'bg-gradient-to-b from-gray-700 to-gray-900 text-white'} p-4 shadow-lg `}>
       <h2 className={`text-2xl font-semibold mb-6 border-b ${theme === 'light' ? 'text-gray-900 border-gray-300 pb-2' : 'text-white border-gray-600 pb-2'}`}>Contact List</h2>
       <div className="relative mb-6">
         <input
@@ -58,10 +58,10 @@ const ContactList = ({ onSelectContact }) => {
          } ${theme === 'light' ? 'text-black' : 'text-white'}`}
          onClick={() => handleContactClick(contact)}
        >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-300 to-gray-400 flex items-center justify-center shadow-md">
+            <div className={`w-10 h-10 rounded-full  flex items-center justify-center shadow-md ${theme === 'light'?'bg-gray-900':'bg-blue-500'}`}>
               <span className="text-lg font-bold text-white">{contact.name[0]}</span>
             </div>
-            <div className="ml-4 border-l border-gray-300 pl-4">
+            <div className={`ml-4 border-l border-gray-300 pl-4 ${theme==='light'?'border-black':'border-white'}`}>
               <p className={`font-semibold ${theme === 'light' ? 'text-gray-800' : 'text-white'}`}>{contact.name}</p>
               <p className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{contact.status}</p>
             </div>

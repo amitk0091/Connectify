@@ -43,7 +43,7 @@ import { useSelector } from 'react-redux';
            <motion.div
              key={item.name}
              whileHover={{ scale: 1.2 }}
-             className={`p-2 rounded-full cursor-pointer ${selected === item.name ? 'bg-blue-700' : 'bg-gray-800'}`}
+             className={`p-2 rounded-full cursor-pointer ${selected === item.name ? (theme==='light'?' bg-sky-600':'bg-blue-700') : 'bg-gray-800'}`}
              onClick={() => handleClick(item.name)}
            >
              {item.icon}
