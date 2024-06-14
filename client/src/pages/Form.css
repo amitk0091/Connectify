@@ -1,7 +1,7 @@
 .container {
   position: relative;
   width: 100%;
-  background-color: #121212; /* Dark background */
+  background-color: #121212; 
   min-height: 100vh;
   overflow: hidden;
 }
@@ -26,7 +26,18 @@
   z-index: 5;
 }
 
-form {
+.sign-in-form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0rem 5rem;
+  transition: all 0.2s 0.7s;
+  overflow: hidden;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+.sign-up-form{
   display: flex;
   align-items: center;
   justify-content: center;

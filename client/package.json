@@ -6,7 +6,10 @@
   "description": "This is chat application",
   "type": "module",
   "main": "src/main/main.js",
-  "author": {"name": "Amit kumawat", "email": "akn778811@gmail.com" },
+  "author": {
+    "name": "Amit kumawat",
+    "email": "akn778811@gmail.com"
+  },
   "license": "ISC",
   "scripts": {
     "start": "electron .",
@@ -21,6 +24,11 @@
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "electron-is-dev": "^3.0.1",
@@ -35,7 +43,8 @@
     "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -68,7 +77,10 @@
       "target": "dmg"
     },
     "linux": {
-      "target": ["deb", "rpm"],
+      "target": [
+        "deb",
+        "rpm"
+      ],
       "category": "Instant Messaging"
     }
   }

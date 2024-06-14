@@ -8,6 +8,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'Name is required'],
         trim: true,
+        unique: true,
         minlength: [2, 'Name must be at least 2 characters long'],
         maxlength: [50, 'Name must be at most 50 characters long']
     },
@@ -23,7 +24,36 @@ const userSchema = new Schema({
         unique: true,
         match: [/\S+@\S+\.\S+/, 'Email is not valid'],
         required: [true, 'Email is required']
-    }
+    }, name: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: [2, 'Name must be at least 2 characters long'],
+        maxlength: [50, 'Name must be at most 50 characters long']
+    },
+    about: {
+        type: String
+    },
+    profilePic: {
+        type: String
+    },
+    coverPic: {
+        type: String
+    },
+    phoneNumber: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: [10, 'Phone number must be at least 10 characters long'],
+        maxlength: [10, 'Phone number must be at most 10 characters long'],
+        unique: true,
+        match: [/^\d{10}$/, 'Phone number is not valid']
+    },
+    isOnline : {
+        type: Boolean,
+        default: false
+    },
+    contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, {
     timestamps: true
 });
