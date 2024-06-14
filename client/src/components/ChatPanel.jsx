@@ -38,6 +38,7 @@ const ChatPanel = ({ selectedContact }) => {
     setMessage(message + emoji.native);
     setShowEmojiPicker(false);
   };
+  const iconColor = theme === 'light' ? 'black' : 'white';
 
   return (
     <div
@@ -49,11 +50,15 @@ const ChatPanel = ({ selectedContact }) => {
     >
       {selectedContact && (
         <div
-          className="flex items-center mb-4 border-b p-2"
+          className={`flex items-center mb-4 border-b  p-2 ${theme === 'light'?'border-black':'border-white'}`}
           style={{ color: theme === 'light' ? '#1e2a4a' : '#ffffff' }}
         >
-          <div className="flex items-center mr-4">
-            <BsFillPersonFill className="text-2xl mr-2" />
+          <div className="flex items-center mr-4 "
+          style={{color: theme === 'light'?'black':'white'}}
+          >
+            <div className={`w-10 h-10 rounded-full mr-2 flex items-center justify-center shadow-md ${theme === 'light'?'bg-gray-900':'bg-blue-500'}`}>
+              <span className="text-lg font-bold text-white">{selectedContact.name[0]}</span>
+            </div>
             <div>
               <p className="font-semibold">{selectedContact.name}</p>
               <p className={`text-sm ${selectedContact.status === 'Online' ? 'text-green-400' : 'text-gray-400'}`}>
@@ -61,10 +66,10 @@ const ChatPanel = ({ selectedContact }) => {
               </p>
             </div>
           </div>
-          <div className="flex ml-auto space-x-6">
-            <FiVideo className="text-xl cursor-pointer" />
-            <FiPhone className="text-xl cursor-pointer" />
-            <BsSearch className="text-xl cursor-pointer" />
+          <div className="flex ml-auto space-x-6 ">
+          <FiVideo className="text-xl cursor-pointer" style={{ color: iconColor }} />
+      <FiPhone className="text-xl cursor-pointer" style={{ color: iconColor }} />
+      <BsSearch className="text-xl cursor-pointer" style={{ color: iconColor }} />
           </div>
         </div>
       )}
@@ -75,7 +80,7 @@ const ChatPanel = ({ selectedContact }) => {
             className={`mb-2 max-w-md ${msg.sender === 'me' ? 'ml-auto flex-row-reverse' : 'flex-row'}`}
           >
             <div
-              className={`p-3 rounded-lg ${msg.sender === 'me' ? 'bg-blue-700 text-white' : 'bg-gray-800 text-white dark:text-gray-900'}`}
+              className={`p-3 rounded-lg ${msg.sender === 'me' ? (theme === 'light'?'bg-sky-600 text-white' :'bg-blue-700' ): (theme === 'light'?'bg-sky-900 text-white':'bg-gray-800 text-white dark:text-gray-900')}`}
             >
               {msg.text}
             </div>
@@ -92,12 +97,13 @@ const ChatPanel = ({ selectedContact }) => {
             value={message}
             onChange={handleChange}
             placeholder="Type a message..."
-            className={`bg-gray-800 w-full text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2 ${
-              theme === 'light' ? 'shadow-md' : ''
-            }`}
+            className={` w-full  py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2 ${
+              theme === 'light' ? 'shadow-md bg-sky-600  text-white border border-gray-300' : 'shadow-md border border-blue-300 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-blue-500'
+            }  `}
           />
           <AiOutlineSmile
             className="absolute top-1/2 right-4 transform -translate-y-1/2 text-xl cursor-pointer"
+            style={{color: theme === 'light'? 'white' : 'white'}}
             onClick={handleToggleEmojiPicker}
           />
           {showEmojiPicker && (
@@ -108,7 +114,7 @@ const ChatPanel = ({ selectedContact }) => {
         </div>
         <button
           type="submit"
-          className="bg-blue-700 ml-2 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`" ml-2 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" ${theme==='light'?'bg-sky-600':'bg-blue-700'}`}
         >
           Send
         </button>
