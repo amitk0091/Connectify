@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BsFillPersonFill, BsSearch } from 'react-icons/bs';
+import { BsSearch } from 'react-icons/bs';
 import { FiPhone, FiVideo } from 'react-icons/fi';
 import { CgAttachment } from "react-icons/cg";
 import { AiOutlineSmile } from 'react-icons/ai';
@@ -7,7 +7,7 @@ import Picker from '@emoji-mart/react';
 import { useSelector } from 'react-redux';
 
 const ChatPanel = ({ selectedContact }) => {
-  const theme = useSelector((state) => state.theme); // Assuming you're fetching theme from Redux
+  const theme = useSelector((state) => state.theme); 
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([

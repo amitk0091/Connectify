@@ -18,7 +18,7 @@ const AddFriendOverlay = ({ suggestions, onClose }) => {
   );
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center transition-opacity duration-300">
+    <div className="fixed z-[100] inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center transition-opacity duration-300">
       <div
         className={`rounded-2xl shadow-2xl p-6 w-11/12 md:w-2/3 lg:w-1/3 transform transition-transform duration-300 ${
           theme === "light"
