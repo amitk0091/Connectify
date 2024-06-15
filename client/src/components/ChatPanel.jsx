@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { BsFillPersonFill, BsSearch } from 'react-icons/bs';
 import { FiPhone, FiVideo } from 'react-icons/fi';
-import { AiOutlineSmile, AiOutlineFileImage } from 'react-icons/ai';
+import { CgAttachment } from "react-icons/cg";
+import { AiOutlineSmile } from 'react-icons/ai';
 import Picker from '@emoji-mart/react';
 import { useSelector } from 'react-redux';
 
@@ -42,7 +43,7 @@ const ChatPanel = ({ selectedContact }) => {
 
   return (
     <div
-      className="flex-1 flex flex-col text-white p-4 max-h-screen overflow-y-auto"
+      className="flex-1  flex flex-col text-white p-4 max-h-screen overflow-y-auto"
       style={{
         backgroundColor: theme === 'light' ? '#dbeeff' : '#111827',
         color: theme === 'light' ? '#1e2a4a' : '#ffffff', 
@@ -89,7 +90,7 @@ const ChatPanel = ({ selectedContact }) => {
       </div>
       <form onSubmit={handleSubmit} className="flex p-2">
         <div className="flex items-center mr-2">
-          <AiOutlineFileImage className="text-xl cursor-pointer" />
+          <CgAttachment className="text-xl cursor-pointer" />
         </div>
         <div className="relative w-full gap-2">
           <input

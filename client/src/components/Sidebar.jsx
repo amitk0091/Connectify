@@ -1,12 +1,40 @@
   
  import React, { useState } from 'react';
  import { motion } from 'framer-motion';
- import { FaComments, FaUserFriends, FaPhoneAlt, FaCog } from 'react-icons/fa';
+ import { FaComments, FaUserFriends, FaPhoneAlt, FaCog  } from 'react-icons/fa';
+ import { AiOutlineUserAdd  } from 'react-icons/ai';
 import Toggle from './Toggle';
 import { useSelector } from 'react-redux';
+import AddFriendOverlay from './AddFriendOverlay';
 
+
+const suggestions = [
+  { id: 1, name: 'John Doe' },
+  { id: 2, name: 'Jane Smith' },
+  { id: 3, name: 'Alice Johnson' },
+  { id: 1, name: 'John Doe' },
+  { id: 2, name: 'Jane Smith' },
+  { id: 3, name: 'Alice Johnson' },
+  { id: 1, name: 'John Doe' },
+  { id: 2, name: 'Jane Smith' },
+  { id: 3, name: 'Alice Johnson' },
+  { id: 1, name: 'John Doe' },
+  { id: 2, name: 'Jane Smith' },
+  { id: 3, name: 'Alice Johnson' },
+  // Add more friend suggestions here
+];
 
  const Sidebar = () => {
+
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
+  const handleOpenOverlay = () => {
+    setIsOverlayVisible(true);
+  };
+
+  const handleCloseOverlay = () => {
+    setIsOverlayVisible(false);
+  };
   const theme = useSelector((state) => state.theme);
 
    const [selected, setSelected] = useState('chat');
@@ -56,6 +84,18 @@ import { useSelector } from 'react-redux';
          >
            <Toggle/>
          </motion.div>
+       </div>
+       <div className="mb-4">
+         <motion.div
+           whileHover={{ scale: 1.2 }}
+           className={`p-2 rounded-full cursor-pointer ${selected === 'settings' ? 'bg-blue-700' : 'bg-gray-800'}`}
+           onClick={handleOpenOverlay}
+         >
+           <AiOutlineUserAdd className="w-6 h-6" />
+         </motion.div>
+         {isOverlayVisible && (
+        <AddFriendOverlay suggestions={suggestions} onClose={handleCloseOverlay} />
+      )}
        </div>
        <div className="mb-4">
          <motion.div
