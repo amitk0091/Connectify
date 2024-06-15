@@ -4,7 +4,6 @@ import path from 'path';
 import isDev from 'electron-is-dev';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-console.log(__dirname)
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -18,7 +17,7 @@ function createWindow() {
   if (isDev) {
     win.loadURL('http://localhost:3000');
   } else {
-    win.loadFile(path.join(__dirname, '../../dist/index.html'));
+    win.loadFile(path.join(__dirname, '../../index.html'));
   }
 }
 

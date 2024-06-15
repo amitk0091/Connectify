@@ -18,22 +18,22 @@ const ChatPanel = ({ selectedContact }) => {
     { id: 5, text: 'Yeah, its been a good day.', sender: 'me' },
   ]);
 
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  const handleToggleEmojiPicker = () => {
-    setShowEmojiPicker(!showEmojiPicker);
-  };
+   const handleToggleEmojiPicker = () => {
+     setShowEmojiPicker(!showEmojiPicker);
+   };
 
-  const handleChange = (event) => {
-    setMessage(event.target.value);
-  };
+   const handleChange = (event) => {
+     setMessage(event.target.value);
+   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (message.trim() === '') return;
-    setMessages([...messages, { id: messages.length + 1, text: message, sender: 'me' }]);
-    setMessage('');
-  };
+   const handleSubmit = (event) => {
+     event.preventDefault();
+     if (message.trim() === '') return;
+     setMessages([...messages, { id: messages.length + 1, text: message, sender: 'me' }]);
+     setMessage('');
+   };
 
   const handleEmojiSelect = (emoji) => {
     setMessage(message + emoji.native);
@@ -124,4 +124,6 @@ const ChatPanel = ({ selectedContact }) => {
   );
 };
 
-export default ChatPanel;
+ export default ChatPanel;
+
+
