@@ -3,6 +3,7 @@
  import { motion } from 'framer-motion';
  import { FaComments, FaUserFriends, FaPhoneAlt, FaCog  } from 'react-icons/fa';
  import { AiOutlineUserAdd  } from 'react-icons/ai';
+ import { IoMdLogOut  } from 'react-icons/io';
 import Toggle from './Toggle';
 import { useSelector } from 'react-redux';
 import AddFriendOverlay from './AddFriendOverlay';
@@ -104,6 +105,15 @@ const suggestions = [
            onClick={() => handleClick('settings')}
          >
            <FaCog className="w-6 h-6" />
+         </motion.div>
+       </div>
+       <div className="mb-4">
+         <motion.div
+           whileHover={{ scale: 1.2 }}
+           className={`p-2 rounded-full cursor-pointer bg-red-600`}
+           
+         >
+           <IoMdLogOut className="w-6 h-6" />
          </motion.div>
        </div>
      </motion.div>
