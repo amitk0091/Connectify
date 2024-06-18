@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/Form.css";
 import {
@@ -11,20 +11,21 @@ import {
   FaLinkedin,
 } from "react-icons/fa";
 import { createUser, loginUser } from "../../fetchAPI";
+import { UserContext } from "../context/context";
 
 
 const Signup = () => {
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
       const response = await createUser({username, email, password})
-      console.log(response);
+      localStorage.setItem("ConnectifyLoggedIn", true);
+      localStorage.setItem("ConnectifyUser", JSON.stringify(response.user));
       navigate('/home');
     } catch (error) {
       console.log(error);
@@ -89,14 +90,16 @@ const Signup = () => {
 }
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  
   const navigate = useNavigate();
   const handleSignin = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUser({username, password})
-      console.log(response);
+      const response = await loginUser({user_email : userEmail, password})
+      localStorage.setItem("ConnectifyLoggedIn", true);
+      localStorage.setItem("ConnectifyUser", JSON.stringify(response.user));
       navigate('/home');
     } catch (error) {
       console.log(error);
@@ -111,8 +114,8 @@ const Login = () => {
         <input
           type="text"
           placeholder="Username"
-          value={username}
-          onChange={e=>setUsername(e.target.value)}
+          value={userEmail}
+          onChange={e=>setUserEmail(e.target.value)}
           className="bg-transparent text-white outline-none flex-1 px-2"
         />
       </div>

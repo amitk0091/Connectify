@@ -1,7 +1,5 @@
 import axios from "axios";
 
-
-
 const connectifyAxios = () => {
     const connectifyAxios = axios.create({
         baseURL: 'http://localhost:5000',
@@ -40,3 +38,33 @@ export const loginUser = async (obj) => {
         throw error;
     }
 };
+
+export const addContact = async (obj) => {
+    try {
+        const response = await connectifyAxios().post(`/contacts`, obj);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const getContacts = async () => {
+    try {
+        const response = await connectifyAxios().get(`/contacts`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const getAllChatRoom = async () => {
+    try {
+        const response = await connectifyAxios().get(`/chats`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

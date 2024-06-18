@@ -1,12 +1,15 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import { getContacts } from '../../fetchAPI';
 
 // Create context object
 export const UserContext = createContext();
 
 // Create a provider component
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // Initial state
-
+    const [chatRooms,setChatRooms] = useState([]);
+    const [allContacts, setAllContacts] = useState([]);
+    const [socket, setSocket] = useState(null);
+    const [selectedContact , setSelectedContact] = useState(null);
     const login = (userData) => {
         setUser(userData);
     };
@@ -15,8 +18,10 @@ export const UserProvider = ({ children }) => {
         setUser(null);
     };
 
+   
+
     return (
-        <UserContext.Provider value={{ user, login, logout }}>
+        <UserContext.Provider value={{  login, logout, allContacts, setAllContacts,chatRooms , setChatRooms , setSocket, socket, selectedContact, setSelectedContact}}>
             {children}
         </UserContext.Provider>
     );

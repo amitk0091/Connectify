@@ -1,42 +1,75 @@
-import { useState } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { FiPhone, FiVideo } from 'react-icons/fi';
 import { CgAttachment } from "react-icons/cg";
 import { AiOutlineSmile } from 'react-icons/ai';
 import Picker from '@emoji-mart/react';
 import { useSelector } from 'react-redux';
+import { UserContext } from '../context/context';
 
-const ChatPanel = ({ selectedContact }) => {
-  const theme = useSelector((state) => state.theme); 
+const ChatPanel = () => {
+  const theme = useSelector((state) => state.theme);
+  const { socket, setAllContacts, allContacts, selectedContact } = useContext(UserContext);
+  console.log('chat panel', selectedContact);
 
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([
-    { id: 1, text: 'Hey there!', sender: 'other' },
-    { id: 2, text: 'Hi! How are you?', sender: 'me' },
-    { id: 3, text: 'I am doing great, thanks!', sender: 'other' },
-    { id: 4, text: 'That sounds awesome!', sender: 'other' },
-    { id: 5, text: 'Yeah, its been a good day.', sender: 'me' },
-  ]);
+  const message = useRef(null);
+  const [messages, setMessages] = useState([]);
+  const otherGuy = selectedContact?._id; // Add a null check for selectedContact
 
-   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  useEffect(() => {
+    if (otherGuy) { // Add a null check for otherGuy
+      const foundContact = allContacts.find(contact => contact._id === otherGuy);
 
-   const handleToggleEmojiPicker = () => {
-     setShowEmojiPicker(!showEmojiPicker);
-   };
+      if (foundContact) {
+        setMessages(foundContact.messages);
+      } else {
+        setMessages([]);
+      }
+    }
+  }, [allContacts, otherGuy]); // Correct the dependency array
 
-   const handleChange = (event) => {
-     setMessage(event.target.value);
-   };
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('ConnectifyUser'));
+    if (selectedContact && user) { // Add null checks for selectedContact and user
+      socket.emit('joinRoom', { user1: { id: selectedContact._id, username: selectedContact.username }, user2: { id: user._id, username: user.username } });
+    }
+  }, [socket]); // Add selectedContact and socket as dependencies
 
-   const handleSubmit = (event) => {
-     event.preventDefault();
-     if (message.trim() === '') return;
-     setMessages([...messages, { id: messages.length + 1, text: message, sender: 'me' }]);
-     setMessage('');
-   };
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const handleToggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const sender = JSON.parse(localStorage.getItem('ConnectifyUser'));
+    const messageContent = message.current.value;
+
+    if (selectedContact && sender) { // Add null checks for selectedContact and sender
+      // Emit the message using the socket
+      socket.emit("sendMessage", {
+        sender: sender._id,
+        receiver: selectedContact._id,
+        content: messageContent
+      });
+
+      // Update the state immutably
+      setAllContacts(prevContacts =>
+        prevContacts.map(contact =>
+          contact._id === selectedContact._id
+            ? { ...contact, messages: [...contact.messages, { sender: sender._id, receiver: selectedContact._id, content: messageContent }] }
+            : contact
+        )
+      );
+    }
+
+    // Clear the input field
+    message.current.value = "";
+  };
 
   const handleEmojiSelect = (emoji) => {
-    setMessage(message + emoji.native);
     setShowEmojiPicker(false);
   };
   const iconColor = theme === 'light' ? 'black' : 'white';
@@ -46,44 +79,44 @@ const ChatPanel = ({ selectedContact }) => {
       className="flex-1  flex flex-col text-white p-4 max-h-screen overflow-y-auto"
       style={{
         backgroundColor: theme === 'light' ? '#dbeeff' : '#111827',
-        color: theme === 'light' ? '#1e2a4a' : '#ffffff', 
+        color: theme === 'light' ? '#1e2a4a' : '#ffffff',
       }}
     >
       {selectedContact && (
         <div
-          className={`flex items-center mb-4 border-b  p-2 ${theme === 'light'?'border-black':'border-white'}`}
+          className={`flex items-center mb-4 border-b  p-2 ${theme === 'light' ? 'border-black' : 'border-white'}`}
           style={{ color: theme === 'light' ? '#1e2a4a' : '#ffffff' }}
         >
           <div className="flex items-center mr-4 "
-          style={{color: theme === 'light'?'black':'white'}}
+            style={{ color: theme === 'light' ? 'black' : 'white' }}
           >
-            <div className={`w-10 h-10 rounded-full mr-2 flex items-center justify-center shadow-md ${theme === 'light'?'bg-gray-900':'bg-blue-500'}`}>
-              <span className="text-lg font-bold text-white">{selectedContact.name[0]}</span>
+            <div className={`w-10 h-10 rounded-full mr-2 flex items-center justify-center shadow-md ${theme === 'light' ? 'bg-gray-900' : 'bg-blue-500'}`}>
+              <span className="text-lg font-bold text-white">{selectedContact.username[0]}</span>
             </div>
             <div>
-              <p className="font-semibold">{selectedContact.name}</p>
-              <p className={`text-sm ${selectedContact.status === 'Online' ? 'text-green-400' : 'text-gray-400'}`}>
-                {selectedContact.status}
+              <p className="font-semibold">{selectedContact.username}</p>
+              <p className={`text-sm ${selectedContact.isOnline ? 'text-green-400' : 'text-gray-400'}`}>
+                {selectedContact.isOnline ? 'Online' : 'Offline'}
               </p>
             </div>
           </div>
           <div className="flex ml-auto space-x-6 ">
-          <FiVideo className="text-xl cursor-pointer" style={{ color: iconColor }} />
-      <FiPhone className="text-xl cursor-pointer" style={{ color: iconColor }} />
-      <BsSearch className="text-xl cursor-pointer" style={{ color: iconColor }} />
+            <FiVideo className="text-xl cursor-pointer" style={{ color: iconColor }} />
+            <FiPhone className="text-xl cursor-pointer" style={{ color: iconColor }} />
+            <BsSearch className="text-xl cursor-pointer" style={{ color: iconColor }} />
           </div>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto">
-        {messages.map((msg) => (
+      <div className="flex-1 overflow-x-auto">
+        {messages && messages.length>0 && messages.map((msg) => (
           <div
-            key={msg.id}
-            className={`mb-2 max-w-md ${msg.sender === 'me' ? 'ml-auto flex-row-reverse' : 'flex-row'}`}
+            key={msg._id}
+            className={`mb-2 max-w-md ${msg.sender !== otherGuy ? 'ml-auto flex-row-reverse' : 'flex-row'}`}
           >
             <div
-              className={`p-3 rounded-lg ${msg.sender === 'me' ? (theme === 'light'?'bg-sky-600 text-white' :'bg-blue-700' ): (theme === 'light'?'bg-sky-900 text-white':'bg-gray-800 text-white dark:text-gray-900')}`}
+              className={`p-3 rounded-lg ${msg.sender !== otherGuy ? (theme === 'light' ? 'bg-sky-600 text-white' : 'bg-blue-700') : (theme === 'light' ? 'bg-sky-900 text-white' : 'bg-gray-800 text-white dark:text-gray-900')}`}
             >
-              {msg.text}
+              {msg.content}
             </div>
           </div>
         ))}
@@ -95,16 +128,14 @@ const ChatPanel = ({ selectedContact }) => {
         <div className="relative w-full gap-2">
           <input
             type="text"
-            value={message}
-            onChange={handleChange}
+            ref={message}
             placeholder="Type a message..."
-            className={` w-full  py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2 ${
-              theme === 'light' ? 'shadow-md bg-sky-600  text-white border border-gray-300' : 'shadow-md border border-blue-300 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-blue-500'
-            }  `}
+            className={` w-full  py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2 ${theme === 'light' ? 'shadow-md bg-sky-600  text-white border border-gray-300' : 'shadow-md border border-blue-300 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-blue-500'
+              }  `}
           />
           <AiOutlineSmile
             className="absolute top-1/2 right-4 transform -translate-y-1/2 text-xl cursor-pointer"
-            style={{color: theme === 'light'? 'white' : 'white'}}
+            style={{ color: theme === 'light' ? 'white' : 'white' }}
             onClick={handleToggleEmojiPicker}
           />
           {showEmojiPicker && (
@@ -115,7 +146,7 @@ const ChatPanel = ({ selectedContact }) => {
         </div>
         <button
           type="submit"
-          className={`" ml-2 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" ${theme==='light'?'bg-sky-600':'bg-blue-700'}`}
+          className={`" ml-2 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" ${theme === 'light' ? 'bg-sky-600' : 'bg-blue-700'}`}
         >
           Send
         </button>
@@ -124,6 +155,6 @@ const ChatPanel = ({ selectedContact }) => {
   );
 };
 
- export default ChatPanel;
+export default ChatPanel;
 
 

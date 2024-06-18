@@ -14,11 +14,15 @@ function createWindow() {
     },
   });
 
-  if (isDev) {
-    win.loadURL('http://localhost:3000');
-  } else {
-    win.loadFile(path.join(__dirname, '../../index.html'));
-  }
+
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `../../index.html`),
+      protocol: "file:",
+      slashes: true
+    })
+  );
+
 }
 
 app.on('ready', createWindow);

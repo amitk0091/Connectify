@@ -1,33 +1,24 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
-import LoginSignupForm from "../pages/LoginSignupForm";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Contacts from "../pages/Contacts";
+import { UserProvider } from "../context/context";
+import Protected from "./Protected";
 
-const router = createBrowserRouter([
-  {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "/signin",
-    element: <LoginSignupForm />,
-  },
-  {
-    path: "/*",
-    element: <LoginSignupForm />,
-  },
-  {
-    path: "/*",
-    element: <Contacts />,
-  },
-]);
 function App() {
   const theme = useSelector((state) => state.theme);
   return (
     <>
       <div className={`${theme === 'light' ? '#fceff0' : '#111827'}flex-grow`}>
-        <RouterProvider router={router} />
+        <UserProvider>
+          <Router>
+            <Routes>
+              <Route>
+                <Route path="/home" element={<Protected component={"Home"}/>} />
+                <Route path="/signin" element={<Protected component={"LoginSignupForm"}/>} />
+                <Route path="/*" element={<Protected />} />
+              </Route>
+            </Routes>
+          </Router>
+        </UserProvider>
       </div>
     </>
   );

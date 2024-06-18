@@ -26,7 +26,6 @@ const userSchema = new Schema({
         required: [true, 'Email is required']
     }, name: {
         type: String,
-        required: true,
         trim: true,
         minlength: [2, 'Name must be at least 2 characters long'],
         maxlength: [50, 'Name must be at most 50 characters long']
@@ -42,16 +41,20 @@ const userSchema = new Schema({
     },
     phoneNumber: {
         type: String,
-        required: true,
         trim: true,
         minlength: [10, 'Phone number must be at least 10 characters long'],
         maxlength: [10, 'Phone number must be at most 10 characters long'],
-        unique: true,
-        match: [/^\d{10}$/, 'Phone number is not valid']
+        match: [/^\d{10}$/, 'Phone number is not valid'],
+        unique: true,  // Ensure unique values
+        sparse: true   // Allows multiple null values
     },
     isOnline : {
         type: Boolean,
         default: false
+    },
+    socketId: {
+        type: String,
+        default: null
     },
     contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, {

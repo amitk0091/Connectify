@@ -2,12 +2,12 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 
-
 const loginUser = async (req, res) => {
     if (req.user) {
         return res.status(200).json({ user: req.user });
     }
-    const { user_email,password } = req.body;
+    const { user_email, password } = req.body;
+
     try {
         const user = await User.findOne({
             $or: [{ email: user_email }, { username: user_email }]
@@ -22,12 +22,19 @@ const loginUser = async (req, res) => {
 
         if (match) {
             const token = generateToken(user);
-            delete user.password;
+        
+            const userObj = user.toObject();
+        
+            delete userObj.password;
+            delete userObj.contacts;
+        
             return res.status(200).cookie('token', token, {
-                expires: new Date(Date.now() + 900000),
-                httpOnly: true,
-            }).json({ user });  // HTTP Success
-        } else {
+                expires: new Date(Date.now() + 10800000), // 3 hours
+                secure: true,
+                sameSite : 'lax'
+            }).json({ user: userObj });  // HTTP Success
+        }
+        else {
             return res.status(401).json({ message: 'Password does not match' });  // HTTP Unauthorized
         }
     } catch (error) {
@@ -52,12 +59,14 @@ const addUser = async (req, res) => {
         const newUser = new User({ username, password: hashedPassword, email });
         await newUser.save();
         const token = generateToken(newUser);
-        delete newUser.password;
+        const newObj = newUser.toObject();
+        delete newObj.password;
+        delete userObj.contacts;
         return res.status(201).cookie('token', token, {
-            expires: new Date(Date.now() + 900000),
-            httpOnly:true,
-            sameSite : none
-        }).json({ newUser }); // http created 
+            expires: new Date(Date.now() + 10800000),
+            secure: true,
+            sameSite : 'lax'
+        }).json({ newObj }); // http created 
 
     } catch (error) {
         console.log(error);
@@ -75,7 +84,7 @@ const deleteUser = async (req, res) => {
         } else if (username) {
             user = await User.findOne({ username }, { password: 1 });
         } else {
-            return res.status(400).json({ message: 'Name or email is required'}); // HTTP Bad Request
+            return res.status(400).json({ message: 'Name or email is required' }); // HTTP Bad Request
         }
 
         if (!user) {
