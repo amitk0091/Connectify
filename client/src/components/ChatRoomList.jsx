@@ -18,13 +18,13 @@ const ChatRoomList = () => {
   useEffect(() => {
     if (socket) {
       socket.on('userOnline', (userId) => {
-        console.log('userOnline', userId);
+        // console.log('userOnline', userId);
         setAllContacts(prevContacts =>
           prevContacts.map(contact =>
             contact._id === userId ? { ...contact, isOnline: true } : contact
           )
         );
-        console.log('SelectedContact', selectedContact);
+        // console.log('SelectedContact', selectedContact);
         if (selectedContact && userId === selectedContact._id) {
           setSelectedContact(contact => {
             return {
@@ -41,7 +41,7 @@ const ChatRoomList = () => {
             contact._id === userId ? { ...contact, isOnline: false } : contact
           )
         );
-        console.log('SelectedContact', selectedContact);
+        // console.log('SelectedContact', selectedContact);
         if (selectedContact && userId === selectedContact._id) {
           setSelectedContact(contact => {
             return {
@@ -59,16 +59,17 @@ const ChatRoomList = () => {
   useEffect(() => {
     if (socket) {
       socket.on('newMessage', (message) => {
-        console.log('New Message', message);
+        // console.log('New Message', message);
         setAllContacts(prevContacts =>
           prevContacts.map(contact => {
             if (contact._id === message.sender) {
-              return { ...contact, messages: [...contact.messages, message] };
+              return { ...contact, messages: [...(contact.messages ? contact.messages : []), message] };
             } else {
               return contact;
             }
           })
         );
+        // console.log(allContacts);
       });
     }
   }, [socket]);

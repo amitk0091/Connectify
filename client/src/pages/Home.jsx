@@ -49,6 +49,9 @@ function Home() {
         setAllContacts(contacts);
       } catch (error) {
         console.error("Failed to fetch contacts:", error);
+        // if(error.response.status === 401 ){
+          window.location.href ='/signin';
+        // }
       }
     };
 

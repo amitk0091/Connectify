@@ -35,10 +35,10 @@ const loginUser = async (req, res) => {
             }).json({ user: userObj });  // HTTP Success
         }
         else {
-            return res.status(401).json({ message: 'Password does not match' });  // HTTP Unauthorized
+            return res.status(401).json({ error : 'ERR_PASSWORD_INVALID' });  // HTTP Unauthorized
         }
     } catch (error) {
-        return res.status(500).json({ message: 'Server error', error: error.message });  // HTTP Server Error
+        return res.status(500).json({error : 'ERR_SERVER_ERROR'});  // HTTP Server Error
     }
 }
 
@@ -61,12 +61,12 @@ const addUser = async (req, res) => {
         const token = generateToken(newUser);
         const newObj = newUser.toObject();
         delete newObj.password;
-        delete userObj.contacts;
+        delete newObj.contacts;
         return res.status(201).cookie('token', token, {
             expires: new Date(Date.now() + 10800000),
             secure: true,
             sameSite : 'lax'
-        }).json({ newObj }); // http created 
+        }).json({ user :  newObj }); // http created 
 
     } catch (error) {
         console.log(error);
@@ -103,7 +103,7 @@ const deleteUser = async (req, res) => {
             }
             return res.status(200).json({ message: 'User Deleted Successfully!' }); // HTTP Success
         } else {
-            return res.status(401).json({ message: 'Password does not match' }); // HTTP Unauthorized
+            return res.status(401).json({ error: 'ERR_PASSWORD_INVALID' }); // HTTP Unauthorized
         }
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message }); // HTTP Server Error
@@ -144,9 +144,9 @@ const updateUser = async (req, res) => {
             // Update user details
             const updatedUser = await User.findByIdAndUpdate(user._id, updateData, { new: true });
 
-            return res.status(200).json({ message: 'User updated successfully', user: updatedUser }); // HTTP Success
+            return res.status(200).json({ success: 'UPDATED_SUCCESSFULLY', user: updatedUser }); // HTTP Success
         } else {
-            return res.status(401).json({ message: 'Password does not match' }); // HTTP Unauthorized
+            return res.status(401).json({ error: 'ERR_PASSWORD_INVALID' }); // HTTP Unauthorized
         }
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message }); // HTTP Server Error
@@ -175,9 +175,9 @@ const getUser = async (req, res) => {
         const match = await bcrypt.compare(password, storedHash);
 
         if (match) {
-            res.status(200).json({ message: 'Password matches!' });  // http success
+            res.status(200).json({ success: 'PASSWORD_MATCHED!' });  // http success
         } else {
-            res.status(401).json({ message: 'Password does not match' });  // http unauthorised
+            res.status(401).json({ error: 'ERR_PASSWORD_INVALID' });  // http unauthorised
         }
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });  // server error

@@ -57,7 +57,7 @@ io.use(BindUserNameToSocket);
 
 io.on('connection', async (socket) => {
     try {
-        console.log('A user connected', socket.user.username);
+        // console.log('A user connected', socket.user.username);
 
         const user = await User.findOneAndUpdate({ "_id": socket.user.id }, { $set: { isOnline: true, socketId : socket.id } });
         socket.broadcast.emit('userOnline', socket.user.id);
@@ -81,7 +81,7 @@ io.on('connection', async (socket) => {
                 }
 
                 socket.join(room._id.toString());
-                console.log(`${user2.username} joined, room ${room._id.toString()}`);
+                // console.log(`${user2.username} joined, room ${room._id.toString()}`);
             } catch (error) {
                 console.error('Error joining room:', error);
             }
@@ -100,7 +100,7 @@ io.on('connection', async (socket) => {
                 const receiver= await User.findOne({_id : message.receiver},{socketId: 1, _id : 0});
                 if (room) {
                     io.to(receiver.socketId).emit('newMessage', newMessage);
-                    console.log("Message sent to room", receiver.socketId);
+                    // console.log("Message sent to room", receiver.socketId);
                 } else {
                     console.error('Room not found for message');
                 }
@@ -111,13 +111,13 @@ io.on('connection', async (socket) => {
 
         socket.on('disconnect', async () => {
             try {
-                console.log('A user disconnected', socket.user.username);
+                // console.log('A user disconnected', socket.user.username);
 
                 if (socket.user) {
-                    await User.findByIdAndUpdate(socket.user.id, { isOnline: false });
+                    await User.findByIdAndUpdate(socket.user.id, { isOnline: false, socketId: null});
                     socket.broadcast.emit('userOffline', socket.user.id);
                 }
-            } catch (error) {
+            } catch (error) { 
                 console.error('Error during disconnect:', error);
             }
         });
@@ -128,7 +128,7 @@ io.on('connection', async (socket) => {
 
 // Start server
 server.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+    // console.log(`Server is listening on port ${PORT}`);
 });
 
 

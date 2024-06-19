@@ -10,21 +10,6 @@ import AddFriendOverlay from './AddFriendOverlay';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
 
-// const suggestions = [
-//   { id: 1, name: 'John Doe' },
-//   { id: 2, name: 'Jane Smith' },
-//   { id: 3, name: 'Alice Johnson' },
-//   { id: 1, name: 'John Doe' },
-//   { id: 2, name: 'Jane Smith' },
-//   { id: 3, name: 'Alice Johnson' },
-//   { id: 1, name: 'John Doe' },
-//   { id: 2, name: 'Jane Smith' },
-//   { id: 3, name: 'Alice Johnson' },
-//   { id: 1, name: 'John Doe' },
-//   { id: 2, name: 'Jane Smith' },
-//   { id: 3, name: 'Alice Johnson' },
-//   // Add more friend suggestions here
-// ];
 
 const Sidebar = () => {
 
@@ -122,7 +107,6 @@ const Sidebar = () => {
           <motion.div
             whileHover={{ scale: 1.2 }}
             className={`p-2 rounded-full cursor-pointer bg-red-600`}
-
           >
             <IoMdLogOut onClick={handleLogout} className="w-6 h-6" />
           </motion.div>

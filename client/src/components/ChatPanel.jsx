@@ -10,7 +10,7 @@ import { UserContext } from '../context/context';
 const ChatPanel = () => {
   const theme = useSelector((state) => state.theme);
   const { socket, setAllContacts, allContacts, selectedContact } = useContext(UserContext);
-  console.log('chat panel', selectedContact);
+  // console.log('chat panel', selectedContact);
 
   const message = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -26,14 +26,14 @@ const ChatPanel = () => {
         setMessages([]);
       }
     }
-  }, [allContacts, otherGuy]); // Correct the dependency array
+  }, [allContacts,selectedContact]); // Correct the dependency array
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('ConnectifyUser'));
     if (selectedContact && user) { // Add null checks for selectedContact and user
       socket.emit('joinRoom', { user1: { id: selectedContact._id, username: selectedContact.username }, user2: { id: user._id, username: user.username } });
     }
-  }, [socket]); // Add selectedContact and socket as dependencies
+  }, [selectedContact]); // Add selectedContact and socket as dependencies
 
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
@@ -59,7 +59,7 @@ const ChatPanel = () => {
       setAllContacts(prevContacts =>
         prevContacts.map(contact =>
           contact._id === selectedContact._id
-            ? { ...contact, messages: [...contact.messages, { sender: sender._id, receiver: selectedContact._id, content: messageContent }] }
+            ? { ...contact, messages: [...(contact.messages ? contact.messages : []), { sender: sender._id, receiver: selectedContact._id, content: messageContent }] }
             : contact
         )
       );
@@ -108,7 +108,7 @@ const ChatPanel = () => {
         </div>
       )}
       <div className="flex-1 overflow-x-auto">
-        {messages && messages.length>0 && messages.map((msg) => (
+        {messages && messages.length > 0 && messages.map((msg) => (
           <div
             key={msg._id}
             className={`mb-2 max-w-md ${msg.sender !== otherGuy ? 'ml-auto flex-row-reverse' : 'flex-row'}`}

@@ -3,16 +3,28 @@ import { UserContext } from '../context/context'
 import LoginSignupForm from '../pages/LoginSignupForm'
 import Home from '../pages/Home'
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'
 
-function Protected({ component}) {
-    const  loggedIn = localStorage.getItem("ConnectifyLoggedIn");
+function Protected({ component }) {
+    const loggedIn = localStorage.getItem("ConnectifyLoggedIn");
+    const token = Cookies.get('token');
     const navigate = useNavigate();
-    useEffect(()=>{
-       if(!loggedIn || !component ) navigate('/signin');
-       else navigate('/home');
-    },[])
+    if (component === "LoginSignupForm") {
+        Cookies.remove('token');
+        localStorage.removeItem("ConnectifyLoggedIn");
+        localStorage.removeItem("ConnectifyUser");
+    }
+    // console.log(token);
+    if (component === "Home") {
+        if (loggedIn===null || token===undefined || token === null) {
+            Cookies.remove('token');
+            localStorage.removeItem("ConnectifyLoggedIn");
+            localStorage.removeItem("ConnectifyUser");
+            window.location.href = "/signin"
+        }
+    }
     return (
-        (component ==="LoginSignupForm" && !loggedIn ? <LoginSignupForm /> : <Home/>)
+        (component === "LoginSignupForm" ? <LoginSignupForm /> : <Home />)
     )
 }
 
