@@ -133,7 +133,7 @@ const ChatRoomList = () => {
             </div>
             <div className={`ml-4 border-l border-gray-300 pl-4 ${theme === 'light' ? 'border-black' : 'border-white'}`}>
               <p className={`font-semibold ${theme === 'light' ? 'text-gray-800' : 'text-white'}`}>{contact.username}</p>
-              <p className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{contact.isOnline ? "Online" : "Offline"}</p>
+              <p className={`text-sm ${contact.isOnline ? 'text-green-600' : 'text-gray-600'}` }>{contact.isOnline ? "Online" : "Offline"}</p>
             </div>
           </motion.li>
         ))}

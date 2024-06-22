@@ -128,7 +128,7 @@ io.on('connection', async (socket) => {
 
 // Start server
 server.listen(PORT, () => {
-    // console.log(`Server is listening on port ${PORT}`);
+    console.log(`Server is listening on port ${PORT}`);
 });
 
 
