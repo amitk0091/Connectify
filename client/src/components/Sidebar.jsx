@@ -1,4 +1,4 @@
-
+// Sidebar.js
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaComments, FaUserFriends, FaPhoneAlt, FaCog } from 'react-icons/fa';
@@ -8,23 +8,14 @@ import Toggle from './Toggle';
 import { useSelector } from 'react-redux';
 import AddFriendOverlay from './AddFriendOverlay';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie'
-
+import Cookies from 'js-cookie';
+import ConfirmationOverlay from './ConfirmationOverlay';
 
 const Sidebar = () => {
-
   const navigate = useNavigate();
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-
-  const handleOpenOverlay = () => {
-    setIsOverlayVisible(true);
-  };
-
-  const handleCloseOverlay = () => {
-    setIsOverlayVisible(false);
-  };
+  const [isLogoutConfirmationVisible, setIsLogoutConfirmationVisible] = useState(false);
   const theme = useSelector((state) => state.theme);
-
   const [selected, setSelected] = useState('chat');
 
   const handleClick = (icon) => {
@@ -38,13 +29,19 @@ const Sidebar = () => {
   ];
 
   const handleLogout = () => {
+    setIsLogoutConfirmationVisible(true);
+  };
+
+  const confirmLogout = () => {
     localStorage.removeItem('ConnectifyLoggedIn');
     localStorage.removeItem('ConnectifyUser');
-
     Cookies.remove('token');
-    window.location.href = "/home";
-  }
+    navigate('/home');
+  };
 
+  const cancelLogout = () => {
+    setIsLogoutConfirmationVisible(false);
+  };
 
   return (
     <>
@@ -86,19 +83,18 @@ const Sidebar = () => {
           <motion.div
             whileHover={{ scale: 1.2 }}
             className={`p-2 rounded-full cursor-pointer ${selected === 'settings' ? 'bg-blue-700' : 'bg-gray-800'}`}
-            onClick={handleOpenOverlay}
+            onClick={() => setIsOverlayVisible(true)}
           >
             <AiOutlineUserAdd className="w-6 h-6" />
           </motion.div>
           {isOverlayVisible && (
-            <AddFriendOverlay onClose={handleCloseOverlay} />
+            <AddFriendOverlay onClose={() => setIsOverlayVisible(false)} />
           )}
         </div>
         <div className="mb-4">
           <motion.div
             whileHover={{ scale: 1.2 }}
             className={`p-2 rounded-full cursor-pointer ${selected === 'settings' ? 'bg-blue-700' : 'bg-gray-800'}`}
-           
           >
             <FaCog className="w-6 h-6" />
           </motion.div>
@@ -107,16 +103,22 @@ const Sidebar = () => {
           <motion.div
             whileHover={{ scale: 1.2 }}
             className={`p-2 rounded-full cursor-pointer bg-red-600`}
+            onClick={handleLogout}
           >
-            <IoMdLogOut onClick={handleLogout} className="w-6 h-6" />
+            <IoMdLogOut className="w-6 h-6" />
           </motion.div>
         </div>
       </motion.div>
 
+      {isLogoutConfirmationVisible && (
+        <ConfirmationOverlay
+          message="Are you sure you want to logout?"
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
     </>
   );
 };
 
 export default Sidebar;
-
-

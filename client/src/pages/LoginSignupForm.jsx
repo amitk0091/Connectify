@@ -1,18 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/Form.css";
-import {
-  FaUser,
-  FaLock,
-  FaEnvelope,
-  FaFacebook,
-  FaTwitter,
-  FaGoogle,
-  FaLinkedin,
-} from "react-icons/fa";
+import { FaUser, FaLock, FaEnvelope, FaFacebook, FaTwitter, FaGoogle, FaLinkedin } from "react-icons/fa";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { createUser, loginUser } from "../../fetchAPI";
-import { UserContext } from "../context/context";
-
+import "../pages/Form.css";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -23,13 +15,15 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await createUser({username, email, password})
+      const response = await createUser({ username, email, password });
       localStorage.setItem("ConnectifyLoggedIn", true);
       localStorage.setItem("ConnectifyUser", JSON.stringify(response.user));
+      toast.success('Signup successful!');
       navigate('/home');
     } catch (error) {
+      toast.error('Signup failed. Please try again.');
       console.log(error);
-    }    
+    }
   };
 
   return (
@@ -41,7 +35,7 @@ const Signup = () => {
           type="text"
           placeholder="Username"
           value={username}
-          onChange={e=> setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           className="bg-transparent text-white outline-none flex-1 px-2"
           required
         />
@@ -63,13 +57,12 @@ const Signup = () => {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={e=> setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           className="bg-transparent text-white outline-none flex-1 px-2"
           required
         />
       </div>
-
-      <button type="submit" className="btn" >Signup</button>
+      <button type="submit" className="btn">Signup</button>
       <p className="social-text">Or Sign up with social platforms</p>
       <div className="social-media">
         <a href="#" className="social-icon">
@@ -86,25 +79,27 @@ const Signup = () => {
         </a>
       </div>
     </form>
-  )
-}
+  );
+};
 
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-  
   const navigate = useNavigate();
+
   const handleSignin = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUser({user_email : userEmail, password})
+      const response = await loginUser({ user_email: userEmail, password });
       localStorage.setItem("ConnectifyLoggedIn", true);
       localStorage.setItem("ConnectifyUser", JSON.stringify(response.user));
+      toast.success('Login successful!');
       navigate('/home');
     } catch (error) {
+      toast.error('Login failed. Please try again.');
       console.log(error);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSignin} className="sign-in-form">
@@ -115,7 +110,7 @@ const Login = () => {
           type="text"
           placeholder="Username"
           value={userEmail}
-          onChange={e=>setUserEmail(e.target.value)}
+          onChange={e => setUserEmail(e.target.value)}
           className="bg-transparent text-white outline-none flex-1 px-2"
         />
       </div>
@@ -125,11 +120,11 @@ const Login = () => {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={e=>setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           className="bg-transparent text-white outline-none flex-1 px-2"
         />
       </div>
-      <button type="submit" className="btn solid" >Login</button>
+      <button type="submit" className="btn solid">Login</button>
       <p className="social-text">Or Sign in with social platforms</p>
       <div className="social-media">
         <a href="#" className="social-icon">
@@ -146,10 +141,8 @@ const Login = () => {
         </a>
       </div>
     </form>
-  )
-}
-
-
+  );
+};
 
 const LoginSignupForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -167,9 +160,9 @@ const LoginSignupForm = () => {
     }
   }, [isSignUp]);
 
-
   return (
     <div className="container" ref={containerRef}>
+      <ToastContainer />
       <div className="forms-container">
         <div className="signin-signup">
           {isSignUp ? <Signup /> : <Login />}
@@ -177,7 +170,7 @@ const LoginSignupForm = () => {
       </div>
       <div className="panels-container">
         <div className="panel left-panel">
-          <div className="content mt-32 ">
+          <div className="content mt-32">
             <h3>New here ?</h3>
             <p className="m-3">
               Connect with friends, family, and colleagues like never before. Our chat app makes it easy to stay in touch, no matter where you are. Sign up now to start messaging instantly!
