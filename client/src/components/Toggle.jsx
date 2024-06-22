@@ -54,7 +54,7 @@ function Toggle() {
     const theme = useSelector((state) => state.theme);
   const dispatch = useDispatch()
   const handleThemeToggle = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === 'light' ? 'dark ' : 'light';
     dispatch(setTheme(newTheme));
   };
   return (

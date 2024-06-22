@@ -98,7 +98,7 @@ const Sidebar = () => {
           <motion.div
             whileHover={{ scale: 1.2 }}
             className={`p-2 rounded-full cursor-pointer ${selected === 'settings' ? 'bg-blue-700' : 'bg-gray-800'}`}
-            onClick={() => handleClick('settings')}
+           
           >
             <FaCog className="w-6 h-6" />
           </motion.div>
